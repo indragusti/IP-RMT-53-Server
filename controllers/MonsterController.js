@@ -15,7 +15,7 @@ module.exports = class MonsterController {
           model: Image,
         },
       });
-      console.log(data);
+      // console.log(data);
       res.status(200).json({ data: data, message: `success` });
     } catch (err) {
       console.log(err, "<<< err getAllMonster");
@@ -31,7 +31,7 @@ module.exports = class MonsterController {
           model: Image,
         },
       });
-      console.log(data);
+      // console.log(data);
       if (!data) {
         next({ name: "NotFound", message: `Monster id:${id} not found` });
         return;

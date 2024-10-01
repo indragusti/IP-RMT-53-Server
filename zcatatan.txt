@@ -40,7 +40,9 @@ npx sequelize-cli model:generate --name UserFavorite --attributes userId:integer
 
 npx sequelize db:migrate
 npx sequelize db:migrate:undo:all
+
 npx sequelize db:migrate --name 1-create-user.js && npx sequelize db:migrate --name 3-create-image.js && npx sequelize db:migrate --name 4-create-user-favorite.js
+
 npx sequelize db:migrate:undo --name 4-create-user-favorite.js && npx sequelize db:migrate:undo --name 3-create-image.js && npx sequelize db:migrate:undo --name 1-create-user.js
 
 npx sequelize-cli seed:generate --name seed-User
