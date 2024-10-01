@@ -1,4 +1,5 @@
-const { Monster, Image } = require("../models");
+const { Monster, Image, Sequelize } = require("../models");
+const { Op } = Sequelize;
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -9,14 +10,67 @@ cloudinary.config({
 
 module.exports = class MonsterController {
   static async getAllMonster(req, res, next) {
+    const { q, filter, page, sort } = req.query;
+    const paramQuerySQL = {
+      limit: 12,
+      offset: 0,
+      where: {},
+    };
+
+    // Search
+    // http://localhost:3000/monster?q=rath
+    if (q) {
+      paramQuerySQL.where.name = {
+        [Op.iLike]: `%${q}%`,
+      };
+    }
+
+    // Filter
+    // http://localhost:3000/monster?filter[species]="herbivore"
+    if (filter && filter.species) {
+      paramQuerySQL.where.species = {
+        [Op.iLike]: `%${filter.species}%`,
+      };
+    }
+
+    // Pagination
+    // http://localhost:3000/monster?page[number]=1&page[size]=5
+    if (page) {
+      if (page.size) {
+        paramQuerySQL.limit = page.size;
+      }
+      if (page.number) {
+        paramQuerySQL.offset =
+          page.number * paramQuerySQL.limit - paramQuerySQL.limit;
+      }
+    }
+
+    // Sort
+    // http://localhost:3000/monster?sort=name
+    if (sort) {
+      let columnName = "name";
+      let ordering = "ASC";
+      if (sort[0] === "-") {
+        ordering = "DESC";
+      }
+
+      paramQuerySQL.order = [[columnName, ordering]];
+    }
+
     try {
-      const data = await Monster.findAll({
+      const { rows, count } = await Monster.findAndCountAll(paramQuerySQL, {
         include: {
           model: Image,
         },
       });
       // console.log(data);
-      res.status(200).json({ data: data, message: `success` });
+      res.status(200).json({
+        data: rows,
+        totalPages: Math.ceil(count / paramQuerySQL.limit),
+        currentPage: Number(page?.number || 1),
+        totalData: count,
+        dataPerPage: +paramQuerySQL.limit,
+      });
     } catch (err) {
       console.log(err, "<<< err getAllMonster");
       next(err);
