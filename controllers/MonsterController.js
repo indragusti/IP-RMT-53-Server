@@ -15,6 +15,9 @@ module.exports = class MonsterController {
       limit: 12,
       offset: 0,
       where: {},
+      include: {
+        model: Image,
+      },
     };
 
     // Search
@@ -26,7 +29,7 @@ module.exports = class MonsterController {
     }
 
     // Filter
-    // http://localhost:3000/monster?filter[species]="herbivore"
+    // http://localhost:3000/monster?filter[species]=herbivore
     if (filter && filter.species) {
       paramQuerySQL.where.species = {
         [Op.iLike]: `%${filter.species}%`,
@@ -58,11 +61,7 @@ module.exports = class MonsterController {
     }
 
     try {
-      const { rows, count } = await Monster.findAndCountAll(paramQuerySQL, {
-        include: {
-          model: Image,
-        },
-      });
+      const { rows, count } = await Monster.findAndCountAll(paramQuerySQL);
       // console.log(data);
       res.status(200).json({
         data: rows,
@@ -104,7 +103,7 @@ module.exports = class MonsterController {
     try {
       console.log(req.file);
       const monsterId = +req.params.id;
-      const data = await Monster.findByPk(monsterId);
+      const data = await Image.findByPk(monsterId);
       if (!data) {
         next({
           name: "NotFound",
