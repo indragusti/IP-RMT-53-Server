@@ -16,7 +16,7 @@ module.exports = class UserController {
 
     try {
       const user = await User.findOne({ where: { email } });
-      if (!user || !passwd) {
+      if (!user || !comparePassword(password, user.password)) {
         next({ name: "Unauthorized", message: "Invalid email/password" });
         return;
       }

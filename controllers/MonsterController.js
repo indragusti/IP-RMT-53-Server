@@ -33,7 +33,10 @@ module.exports = class MonsterController {
       });
       // console.log(data);
       if (!data) {
-        next({ name: "NotFound", message: `Monster id:${id} not found` });
+        next({
+          name: "NotFound",
+          message: `Monster with id:${id} is not found`,
+        });
         return;
       }
       res.status(200).json({ data: data, message: `success` });
@@ -51,7 +54,7 @@ module.exports = class MonsterController {
       if (!data) {
         next({
           name: "NotFound",
-          message: `Monster id:${monsterId} not found`,
+          message: `Monster with id:${monsterId} is not found`,
         });
         return;
       }
@@ -65,7 +68,9 @@ module.exports = class MonsterController {
         }
       );
       await data.update({ imgUrl: result.secure_url });
-      res.json({ message: "Image url has been updated" });
+      res.json({
+        message: `Image url on monster with id:${monsterId} has been updated`,
+      });
     } catch (err) {
       console.log(err, "<<< err uploadImgById");
       next(err);

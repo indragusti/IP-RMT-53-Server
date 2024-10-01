@@ -10,16 +10,21 @@ app.use(express.json());
 
 const MonsterController = require("./controllers/MonsterController");
 const UserController = require("./controllers/UserController");
+const UserFavController = require("./controllers/UserFavController");
 
-// const authentication = require("./middlewares/authentication");
+const authentication = require("./middlewares/authentication");
 const { errorHandler } = require("./middlewares/errorHandler");
 
 app.post("/login", UserController.login);
 app.post("/register", UserController.register);
 
-// app.use(authentication);
+app.use(authentication);
 app.get("/monster", MonsterController.getAllMonster);
 app.get("/monster/:id", MonsterController.getPerMonster);
+
+app.get("/favorites", UserFavController.getFavMonster);
+app.post("/favorites", UserFavController.addFavMonster);
+app.delete("/favorites/:monsterId", UserFavController.delFavMonster);
 
 app.use(errorHandler);
 
