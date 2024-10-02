@@ -17,6 +17,12 @@ module.exports = class MonsterController {
       where: {},
       include: {
         model: Image,
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
       },
     };
 
@@ -62,9 +68,22 @@ module.exports = class MonsterController {
 
     try {
       const { rows, count } = await Monster.findAndCountAll(paramQuerySQL);
-      // console.log(data);
+
+      const formattedData = rows.map((monster) => {
+        const imageUrl = monster.Image.imageUrl.split("/revision/")[0];
+
+        return {
+          id: monster.id,
+          type: monster.type,
+          species: monster.species,
+          name: monster.name,
+          description: monster.description,
+          imageUrl: imageUrl,
+        };
+      });
+
       res.status(200).json({
-        data: rows,
+        data: formattedData,
         totalPages: Math.ceil(count / paramQuerySQL.limit),
         currentPage: Number(page?.number || 1),
         totalData: count,
@@ -82,9 +101,14 @@ module.exports = class MonsterController {
       const data = await Monster.findByPk(id, {
         include: {
           model: Image,
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
         },
       });
-      // console.log(data);
       if (!data) {
         next({
           name: "NotFound",
@@ -92,7 +116,18 @@ module.exports = class MonsterController {
         });
         return;
       }
-      res.status(200).json({ data: data, message: `success` });
+      const imageUrl = data.Image.imageUrl.split("/revision/")[0];
+
+      const formattedData = {
+        id: data.id,
+        type: data.type,
+        species: data.species,
+        name: data.name,
+        description: data.description,
+        imageUrl: imageUrl,
+      };
+
+      res.status(200).json({ data: formattedData, message: "success" });
     } catch (err) {
       console.log(err, "<<< err getPerMonster");
       next(err);

@@ -1,4 +1,4 @@
-const { UserFavorite, Monster, User } = require("../models");
+const { UserFavorite, Monster, User, Image } = require("../models");
 
 module.exports = class UserFavController {
   static async getFavMonster(req, res, next) {
@@ -13,10 +13,41 @@ module.exports = class UserFavController {
 
       const favorites = await UserFavorite.findAll({
         where: { userId: id },
-        include: { model: Monster },
+        include: {
+          model: Monster,
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+          include: {
+            model: Image,
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
       });
 
-      res.status(200).json({ data: favorites, message: `success` });
+      const formattedFavorites = favorites.map((favorite) => {
+        const monster = favorite.Monster;
+        const imageUrl = monster.Image
+          ? monster.Image.imageUrl.split("/revision/")[0]
+          : null;
+
+        return {
+          userId: id,
+          monsterId: monster.id,
+          type: monster.type,
+          species: monster.species,
+          name: monster.name,
+          description: monster.description,
+          imageUrl: imageUrl,
+        };
+      });
+
+      res.status(200).json({ data: formattedFavorites, message: "success" });
     } catch (err) {
       console.log(err, "<<< err getFavMonster");
       next(err);
@@ -56,10 +87,7 @@ module.exports = class UserFavController {
 
       console.log();
 
-      await UserFavorite.create(
-        { userId: id, monsterId }
-        // include: { model: Monster },
-      );
+      await UserFavorite.create({ userId: id, monsterId });
       res.status(201).json({
         message: `Monster with id:${monsterId} has been successfully added to favorites`,
       });

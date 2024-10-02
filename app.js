@@ -6,9 +6,11 @@ const upload = multer({ storage: multer.memoryStorage() });
 const authentication = require("./middlewares/authentication");
 const { guardAdmin } = require("./middlewares/authorization");
 const { errorHandler } = require("./middlewares/errorHandler");
+// const corsOptions = require("./middlewares/cors");
 
 const app = express();
 
+// app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
