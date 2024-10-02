@@ -1,4 +1,4 @@
-const { User } = require("../models");
+// const { User } = require("../models");
 
 async function guardAdmin(req, res, next) {
   try {
@@ -6,7 +6,7 @@ async function guardAdmin(req, res, next) {
     console.log("<<< mulai guardAdmin");
     console.log("role yang lagi akses:", req.user.role);
     console.log("<<< selesai guardAdmin");
-    if (req.user.role !== "Admin") {
+    if (req.user.role !== "admin") {
       next({ name: "Forbidden", message: "You are not authorized" });
       return;
     }

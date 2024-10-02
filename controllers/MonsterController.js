@@ -151,16 +151,25 @@ module.exports = class MonsterController {
       const result = await cloudinary.uploader.upload(
         `data:${mimeType};base64,${base64Image}`,
         {
-          folder: "indra",
+          folder: "IP-repeat",
           public_id: req.file.originalname,
         }
       );
-      await data.update({ imgUrl: result.secure_url });
+      await data.update({ imageUrl: result.secure_url });
       res.json({
         message: `Image url on monster with id:${monsterId} has been updated`,
       });
     } catch (err) {
       console.log(err, "<<< err uploadImgById");
+      next(err);
+    }
+  }
+
+  static async coba(req, res, next) {
+    try {
+      const data = await Image.findAll();
+      res.status(200).json({ data: data });
+    } catch (err) {
       next(err);
     }
   }

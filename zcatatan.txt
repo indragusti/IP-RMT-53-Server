@@ -83,3 +83,32 @@ npx jest updateCuisine.test.js
 ===============================================================================
 
 
+redux
+generate artificial intel
+google login
+
+
+{
+    "data": [
+        {
+            "id": 28,
+            "type": "large",
+            "species": "flying wyvern",
+            "name": "Diablos",
+            "description": "The apex monster of the Wildspire Waste.\nA menacing, territorial beast that lurks underground.\nLoud noises will cause it to lunge out of the sand in search of prey.",
+            "imageUrl": "https://static.wikia.nocookie.net/monsterhunterworld_gamepedia_en/images/0/0f/MHW_Diablos_Icon.png"
+        },
+        {
+            "id": 29,
+            "type": "large",
+            "species": "flying wyvern",
+            "name": "Black Diablos",
+            "description": "These black-shelled Diablos are actually female Diablos in heat. The color signals their aggressiveness and heightened hostility to other creatures in their habitat.",
+            "imageUrl": "https://static.wikia.nocookie.net/monsterhunterworld_gamepedia_en/images/f/f3/MHW_Black_Diablos_Icon.png"
+        }
+    ],
+    "totalPages": 1,
+    "currentPage": 1,
+    "totalData": 2,
+    "dataPerPage": 12
+}
