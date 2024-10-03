@@ -19,17 +19,16 @@ const UserFavController = require("./controllers/UserFavController");
 const GeminiController = require("./controllers/GeminiController");
 
 // app.get("/coba", MonsterController.coba);
+app.post("/register", UserController.register);
 app.post("/login", UserController.login);
 app.post("/login/google", UserController.googleLogin);
-app.post("/register", UserController.register);
 
 app.use(authentication);
 
-app.post("/gemini", GeminiController.generate);
-app.get("/monster", MonsterController.getAllMonster);
-app.get("/monster/:id", MonsterController.getPerMonster);
+app.get("/monsters", MonsterController.getAllMonster);
+app.get("/monsters/:id", MonsterController.getPerMonster);
 app.patch(
-  "/monster/:id/imgUrl",
+  "/monsters/:id/imgUrl",
   guardAdmin,
   upload.single("file"),
   MonsterController.uploadImgById
@@ -38,6 +37,8 @@ app.patch(
 app.get("/favorites", UserFavController.getFavMonster);
 app.post("/favorites", UserFavController.addFavMonster);
 app.delete("/favorites/:monsterId", UserFavController.delFavMonster);
+
+app.post("/gemini", GeminiController.generate);
 
 app.use(errorHandler);
 
