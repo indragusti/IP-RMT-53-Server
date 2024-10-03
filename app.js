@@ -16,20 +16,7 @@ app.use(express.json());
 const MonsterController = require("./controllers/MonsterController");
 const UserController = require("./controllers/UserController");
 const UserFavController = require("./controllers/UserFavController");
-const gemini = require("./helpers/gemini");
-
-app.post("/gemini", async (req, res, next) => {
-  try {
-    const { question } = req.body;
-    const prompt = `${question}`;
-    const data = await gemini(prompt);
-    console.log(data, "<<< data di app gemini");
-    res.status(200).json({ data });
-  } catch (err) {
-    console.log(err, "<<< err gemini");
-    next(err);
-  }
-});
+const GeminiController = require("./controllers/GeminiController");
 
 // app.get("/coba", MonsterController.coba);
 app.post("/login", UserController.login);
@@ -38,6 +25,7 @@ app.post("/register", UserController.register);
 
 app.use(authentication);
 
+app.post("/gemini", GeminiController.generate);
 app.get("/monster", MonsterController.getAllMonster);
 app.get("/monster/:id", MonsterController.getPerMonster);
 app.patch(
