@@ -112,3 +112,17 @@ google login
     "totalData": 2,
     "dataPerPage": 12
 }
+
+===============================================================================
+
+testing
+npx sequelize-cli db:create --env test
+npx sequelize-cli db:migrate --env test
+npx sequelize-cli db:seed:all --env test
+
+untuk bikin dari awal:
+npx sequelize-cli db:migrate:undo:all --env test
+npx sequelize-cli db:seed:undo:all --env test
+
+npm test user.test.js
+npm test monster.test.js

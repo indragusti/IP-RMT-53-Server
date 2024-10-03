@@ -44,6 +44,7 @@ module.exports = class UserController {
         role: "user",
       });
       res.status(201).json({
+        id: user.id,
         username: user.username,
         email: user.email,
       });
