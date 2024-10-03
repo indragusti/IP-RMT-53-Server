@@ -23,7 +23,7 @@ app.post("/gemini", async (req, res, next) => {
     const { question } = req.body;
     const prompt = `${question}`;
     const data = await gemini(prompt);
-    console.log(data, "<<< data di app gemini"); // Tambahkan ini untuk debug
+    console.log(data, "<<< data di app gemini");
     res.status(200).json({ data });
   } catch (err) {
     console.log(err, "<<< err gemini");
@@ -31,8 +31,9 @@ app.post("/gemini", async (req, res, next) => {
   }
 });
 
-app.get("/coba", MonsterController.coba);
+// app.get("/coba", MonsterController.coba);
 app.post("/login", UserController.login);
+app.post("/login/google", UserController.googleLogin);
 app.post("/register", UserController.register);
 
 app.use(authentication);
