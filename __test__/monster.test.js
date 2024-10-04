@@ -88,7 +88,7 @@ afterAll(async () => {
 describe("GET /monster", () => {
   test("Berhasil mendapatkan list monster", async () => {
     const response = await request(app)
-      .get("/monster")
+      .get("/monsters")
       .set("Authorization", `Bearer ${access_token}`)
       .expect(200);
 
@@ -111,7 +111,7 @@ describe("GET /monster", () => {
 describe("GET /monster/:id", () => {
   test("Berhasil mendapatkan monster berdasarkan ID", async () => {
     const response = await request(app)
-      .get(`/monster/${monsterId}`)
+      .get(`/monsters/${monsterId}`)
       .set("Authorization", `Bearer ${access_token}`)
       .expect("Content-Type", /json/)
       .expect(200);
